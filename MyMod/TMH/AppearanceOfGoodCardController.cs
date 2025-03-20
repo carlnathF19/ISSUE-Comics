@@ -6,7 +6,7 @@ using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
-namespace ISSUEComics
+namespace ISSUEComics.TMH
 {
     public class AppearanceOfGoodCardController : CardController
     { 

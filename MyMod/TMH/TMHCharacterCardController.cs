@@ -12,7 +12,7 @@ using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Controller.VoidGuardWrithe;
 using Handelabra.Sentinels.Engine.Model;
 
-namespace ISSUEComics
+namespace ISSUEComics.TMH
 {
     public class TMHCharacterCardController : HeroCharacterCardController
     {

@@ -7,7 +7,7 @@ using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
 //Remember, use Lady of The Wood as the example of how to setup a tokenpool;
-//namespace ISSUEComics
+//namespace ISSUEComics.TMH
 //{
 //	public class SolarPowerCellController : CardController
 //	{
