@@ -6,7 +6,7 @@ using Handelabra.Sentinels.Engine.Controller;
 //Needs to be updated to TMH location using Handelabra.Sentinels.Engine.Controller.LanternJack; 
 using Handelabra.Sentinels.Engine.Model;
 
-namespace Workshopping.TMH
+namespace ISSUEComics
 {
 	public class iGrenadeCardController : TMHOneShotCardController
 	{

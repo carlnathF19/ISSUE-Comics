@@ -5,7 +5,7 @@ using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
 //Legacy Next Evolution, Ra Flesh of Sun God, Wraith Stun Bomb
-namespace Workshopping.TMH
+namespace ISSUEComics
 {
 	public class AppearanceOfEvilCardController : CardController
 	{

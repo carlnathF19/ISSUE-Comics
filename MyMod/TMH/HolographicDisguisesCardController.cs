@@ -7,7 +7,7 @@ using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
 
-namespace Workshopping.TMH
+namespace ISSUEComics
 {
     public class HolographicDisguisesCardController : CardController
     {

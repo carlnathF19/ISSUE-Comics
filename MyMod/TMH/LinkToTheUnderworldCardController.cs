@@ -12,7 +12,7 @@ using Handelabra.Sentinels.Engine.Model;
 //bobbertoriley — Today at 8:45 PM
 //I think you can use GameController.SelectAndPlayCard and just pass in card.UnderCardLocation.Cards.PlayCard is the underlying method and it handles making sure it goes to the right location and the limited rule
 
-namespace Workshopping.TMH
+namespace ISSUEComics
 {
 	public class LinkToTheUnderworldCardController : CardController
 	{

@@ -7,48 +7,57 @@ using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
 //Remember, use Lady of The Wood as the example of how to setup a tokenpool;
-namespace Workshopping.TMH
-{
-	//public class SolarPowerCellCardController : CardController
-	//{
-	//public static readonly string SolarPanelPool1Identifier = "SolarPanelPool1";
+//namespace ISSUEComics
+//{
+//	public class SolarPowerCellController : CardController
+//	{
+//		public SolarPowerCellController(Card card, TurnTakerController turnTakerController)
+//			: base(card, turnTakerController)
+//		{
+//			base.SpecialStringMaker.ShowTokenPool(base.Card.FindTokenPool(TokenPool.SolarPowerCellPoolIdentifier));
+//		}
 
-	//public readonly string TMHIdentifier = "TMH";
+//		public override IEnumerator Play()
+//		{
+//			IEnumerator coroutine = ResetTokenValue();
+//			if (base.UseUnityCoroutines)
+//			{
+//				yield return base.GameController.StartCoroutine(coroutine);
+//			}
+//			else
+//			{
+//				base.GameController.ExhaustCoroutine(coroutine);
+//			}
+//		}
 
+//		public override void AddTriggers()
+//		{
+//			AddTrigger((DealDamageAction dd) => dd.DidDealDamage && dd.DamageSource.IsSameCard(base.Card), (DealDamageAction dd) => base.GameController.AddTokensToPool(base.Card.FindTokenPool(TokenPool.SolarPowerCellPoolIdentifier), 1, GetCardSource()), TriggerType.AddTokensToPool, TriggerTiming.After);
+//			AddTrigger((DealDamageAction dd) => dd.DidDealDamage && dd.Target == base.Card, (DealDamageAction dd) => base.GameController.AddTokensToPool(base.Card.FindTokenPool(TokenPool.SolarPowerCellPoolIdentifier), 1, GetCardSource()), TriggerType.AddTokensToPool, TriggerTiming.After, ActionDescription.DamageTaken);
+//			AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, EndOfTurnResponse, TriggerType.DealDamage);
+//			AddStartOfTurnTrigger(base.GameController.AddTokensToPool(base.Card.FindTokenPool(TokenPool.SolarPowerCellPoolIdentifier), 1, GetCardSource()));
+//			AddWhenDestroyedTrigger((DestroyCardAction dc) => ResetTokenValue(), TriggerType.Hidden);
+//			AddTrigger((MoveCardAction mc) => mc.Origin.IsInPlayAndNotUnderCard && !mc.Destination.IsInPlayAndNotUnderCard && mc.CardToMove == base.Card, (MoveCardAction mc) => ResetTokenValue(), TriggerType.ModifyTokens, TriggerTiming.After, ActionDescription.Unspecified, isConditional: false, requireActionSuccess: true, null, outOfPlayTrigger: true);
+//		}
 
+//		public IEnumerator ResetTokenValue()
+//		{
+//			base.Card.FindTokenPool(TokenPool.SolarPowerCellPoolIdentifier).SetToInitialValue();
+//			yield return null;
+//		}
 
-
-
-
-	//public SolarPowerCellCardController(Card card, TurnTakerController turnTakerController)
-	//   : base(card, turnTakerController)
-	//{	  
-	//       base.SpecialStringMaker.ShowNonEnvironmentTargetWithHighestHP(2);
-	//       //base.NumberOfTokens = 0;
-	//       //base.TriggerTypes = new TriggerType[2]
-	//       //{
-	//       //	TriggerType.ModifyTokens,
-	//       //	TriggerType.DrawCard
-	//       //};
-	//   }
-
-	//public override void AddTriggers()
-	//{
-	//	AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, (PhaseChangeAction p) => AddOrRemoveTokens(base.UnluckyPool, 1), new TriggerType[1] { TriggerType.ModifyTokens });
-	//}
-
-	//public override IEnumerator UsePower(int index = 0)
-	//{
-
-	//	IEnumerator gainHpRoutine = base.GameController.GainHP(base.CharacterCard, 2, null, null, GetCardSource());		
-	//	if (base.UseUnityCoroutines)
-	//	{
-	//		yield return base.GameController.StartCoroutine(gainHpRoutine);
-	//	}
-	//	else
-	//	{
-	//		base.GameController.ExhaustCoroutine(gainHpRoutine);			
-	//	}
-	//}
-	//}
-}
+//		private IEnumerator EndOfTurnResponse(PhaseChangeAction p)
+//		{
+//			int X = base.Card.FindTokenPool(TokenPool.SolarPowerCellPoolIdentifier).CurrentValue + 1;
+//			IEnumerator coroutine = DealDamageToHighestHP(base.Card, 2, (Card c) => c.IsNonEnvironmentTarget, (Card c) => X, DamageType.Fire);
+//			if (base.UseUnityCoroutines)
+//			{
+//				yield return base.GameController.StartCoroutine(coroutine);
+//			}
+//			else
+//			{
+//				base.GameController.ExhaustCoroutine(coroutine);
+//			}
+//		}
+//	}
+//}
