@@ -38,9 +38,13 @@
   <ItemGroup>
     <Compile Include="TMH\AppearanceOfEvilCardController.cs" />
     <Compile Include="TMH\AppearanceOfGoodCardController.cs" />
+    <Compile Include="TMH\YearsOfExperienceCardController.cs" />
+    <Compile Include="TMH\SideKickCardController.cs" />
+    <Compile Include="TMH\ReconCardController.cs" />
+    <Compile Include="TMH\MixedOrders.cs" />
     <Compile Include="TMH\DigitalWardrobeCardController.cs" />
     <Compile Include="TMH\FieldProjectorCardController.cs" />
-    <Compile Include="TMH\iGrenadeCardController.cs" />
+    <Compile Include="TMH\IGrenadeCardController.cs" />
     <Compile Include="TMH\LinkToTheUnderworldCardController.cs" />
     <Compile Include="TMH\IntangibleProofCardController.cs" />
     <Compile Include="TMH\ProfessionalInfiltrationCardController.cs" />
@@ -48,7 +52,7 @@
     <Compile Include="TMH\FieldGeneratorCardController.cs" />
     <Compile Include="TMH\HolographicRecalibrationCardController.cs" />
     <Compile Include="TMH\HolographicDisguisesCardController.cs" />
-    <Compile Include="TMH\TMHNonVitalHitCardController.cs" />
+    <Compile Include="TMH\NonVitalHitCardController.cs" />
     <Compile Include="TMH\TMHCharacterCardController.cs" />
     <Compile Include="TMH\TMHOneShotCardController.cs" />
     <Compile Include="TMH\TMHUtilityCharacterCardController.cs" />

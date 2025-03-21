@@ -8,9 +8,9 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace ISSUEComics.TMH
 {
-	public class iGrenadeCardController : TMHOneShotCardController
+	public class IGrenadeCardController : TMHOneShotCardController
 	{
-		public iGrenadeCardController(Card card, TurnTakerController turnTakerController)
+		public IGrenadeCardController(Card card, TurnTakerController turnTakerController)
 			: base(card, turnTakerController)
 		{
 			base.SpecialStringMaker.ShowSpecialString(() => "The difference between The Machine Heart's current and maximum HP is " + GetXDamage() + ".");

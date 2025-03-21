@@ -7,9 +7,9 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace ISSUEComics.TMH
 {
-	public class TMHNonVitalHitCardController : CardController
+	public class NonVitalHitCardController : CardController
 	{
-		public TMHNonVitalHitCardController(Card card, TurnTakerController turnTakerController)
+		public NonVitalHitCardController(Card card, TurnTakerController turnTakerController)
 			: base(card, turnTakerController)
 		{
 		}
