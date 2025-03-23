@@ -182,7 +182,7 @@
       ],
       "icons": [],
       "body": [
-        "One villain target deals one target 3 Melee Damage."
+        "[This card is still in development, and will imitate Digital Wardrobe, Draw 4 play 1, end turn immediately.  ]One villain target deals one target 3 Melee Damage."
       ],
       "flavorQuotes": []
     },
@@ -193,7 +193,7 @@
       "keywords": [],
       "icons": [],
       "body": [
-        "Immune to Projectile damage, immune to melee damage."
+        "(This card is still in development, and will imitate Digital Wardrobe, Draw 4 play 1, end turn immediately.  ) Immune to Projectile damage, immune to melee damage."
       ],
       "powers": [
         "Prevent all damage to the machine heart until the start of your next turn, then destroy this card."
@@ -223,7 +223,7 @@
       ],
       "icons": [],
       "body": [
-        "Reveal top card of Environment Deck.  If this card is a target, discard it and gain 2 health.  If not replace the card, you may use 1 power now."
+        "[This card is still in development, and will imitate Digital Wardrobe, Draw 4 play 1, end turn immediately.  ]Reveal top card of Environment Deck.  If this card is a target, discard it and gain 2 health.  If not replace the card, you may use 1 power now."
       ],
       "flavorQuotes": []
     },
@@ -236,7 +236,7 @@
       ],
       "icons": [],
       "body": [
-        "Place this card next to target hero, TMH may redirect damage from this target to himself"
+        "[This card is still in development, and will imitate Digital Wardrobe, Draw 4 play 1, end turn immediately.  ]Place this card next to target hero, TMH may redirect damage from this target to himself"
       ],
       "flavorQuotes": []
     },
@@ -249,10 +249,10 @@
       ],
       "icons": [],
       "body": [
-        "At the start of your turn, Place a token on this card."
+        "[This card is still in development, and will imitate Digital Wardrobe, Draw 4 play 1, end turn immediately.  ]At the start of your turn, Place a token on this card."
       ],
       "powers": [
-        "Remove all tokens from this card and restor  HP where x is the number of tokens discarded this way."
+        "Remove all tokens from this card and restore  HP where x is the number of tokens discarded this way."
       ],
       "flavorQuotes": []
     },
@@ -265,7 +265,7 @@
       ],
       "icons": [],
       "body": [
-        "The Machine Heart searches through his deck for 3 cards, puts two in his hand and discards the third"
+        "[This card is still in development, and will imitate Digital Wardrobe, Draw 4 play 1, end turn immediately.  ]The Machine Heart searches through his deck for 3 cards, puts two in his hand and discards the third"
       ],
       "flavorQuotes": []
     }

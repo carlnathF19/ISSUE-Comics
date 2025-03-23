@@ -26,7 +26,7 @@ namespace ISSUEComics.TMH
 			int? requiredTargets = 1;
 			CardSource cardSource = GetCardSource();
 
-			IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(decisionMaker, source, xDamage, DamageType.Radiant, numberOfTargets, optional: false, requiredTargets, isIrreducible: false, allowAutoDecide: false, autoDecide: false, null, null, null, null, null, selectTargetsEvenIfCannotDealDamage: false, null, null, ignoreBattleZone: false, null, cardSource);
+			IEnumerator coroutine = GameController.SetHP(base.CharacterCard, 13);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
@@ -36,7 +36,7 @@ namespace ISSUEComics.TMH
 				base.GameController.ExhaustCoroutine(coroutine);
 			}
 
-			IEnumerator coroutine2 = base.GameController.ShuffleCardIntoLocation(DecisionMaker, base.Card, base.TurnTaker.Deck, optional: false, toBottom: false, GetCardSource());
+			IEnumerator coroutine2 = base.GameController.SelectTargetsAndDealDamage(decisionMaker, source, xDamage, DamageType.Radiant, numberOfTargets, optional: false, requiredTargets, isIrreducible: true, allowAutoDecide: false, autoDecide: false, null, null, null, null, null, selectTargetsEvenIfCannotDealDamage: false, null, null, ignoreBattleZone: false, null, cardSource);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine2);
@@ -44,6 +44,16 @@ namespace ISSUEComics.TMH
 			else
 			{
 				base.GameController.ExhaustCoroutine(coroutine2);
+			}			
+
+			IEnumerator coroutine3 = base.GameController.ShuffleCardIntoLocation(DecisionMaker, base.Card, base.TurnTaker.Deck, optional: false, toBottom: false, GetCardSource());
+			if (base.UseUnityCoroutines)
+			{
+				yield return base.GameController.StartCoroutine(coroutine3);
+			}
+			else
+			{
+				base.GameController.ExhaustCoroutine(coroutine3);
 			}
 		}
 

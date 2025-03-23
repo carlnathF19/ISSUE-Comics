@@ -6,7 +6,7 @@
     <ProjectGuid>{44F8C838-553C-482C-B389-2B375B8590C9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>ISSUEComics</RootNamespace>
-    <AssemblyName>MyMod</AssemblyName>
+    <AssemblyName>ISSUEComics</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
