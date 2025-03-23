@@ -17,7 +17,7 @@
       "hitpointsColor": "bd3a3d",
       "character": true,
       "powers": [
-        "Until the start of your next turn, whenever the machine heart would be dealt damage, reduce that damage by 1. The machine heart may deal 1 damage of that type to the source."
+        "Until the start of your next turn, the first time the machine heart would be dealt damage by a target, reduce that damage by 1. The machine heart may deal 1 damage of that type to the source."
       ],
       "icons": [],
       "hitpoints": 26,

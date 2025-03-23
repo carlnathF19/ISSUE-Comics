@@ -26,7 +26,7 @@ namespace ISSUEComics.TMH
 			int? requiredTargets = 1;
 			CardSource cardSource = GetCardSource();
 
-			IEnumerator coroutine = GameController.SetHP(base.CharacterCard, 13, [CardSource = cardSource = null]);
+			IEnumerator coroutine = gameController.SetHP(base.CharacterCard, 13, GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);

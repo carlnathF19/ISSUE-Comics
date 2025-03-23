@@ -148,7 +148,7 @@ namespace ISSUEComics.TMH
             //Will this reduce the damage until the start of the next turn.
             //DamageType? damageTypeThatTMHWillDeal = GetDamageTypeThatTMHWillDeal();
 
-            AddCounterDamageTrigger((DealDamageAction dd) => dd.Target == base.CharacterCard, () => base.CharacterCard, () => base.CharacterCard, oncePerTargetPerTurn: false, 1, DamageType.Energy);
+            AddCounterDamageTrigger((DealDamageAction dd) => dd.Target == base.CharacterCard, () => base.CharacterCard, () => base.CharacterCard, oncePerTargetPerTurn: true, 1, DamageType.Energy);
 
             //OnDealDamageStatusEffect onDealDamageStatusEffect = new OnDealDamageStatusEffect(base.Card, DealDamage, );
 
