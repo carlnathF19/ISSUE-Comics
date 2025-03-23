@@ -1,56 +1,22 @@
 {
-   "title":"Sample Mod",
-   "author":"MigrantP",
-   "description":"Nothing in this mod is intended to be balanced or playable. It exists as an example to help you as you start working on your own mod. Get the source code on GitHub here: https://github.com/Handelabra/WorkshopSample",
-   "namespace":"Workshopping",
-   "publishedFileId":2422637296,
-   "dll":"MyMod.dll",
-   "version":"0.7",
-   "color":"4444DD",
-   "manualTags":[],
-   "decks":{
-      "heroes":[
-         "MigrantCoder",
-         "TMH"
-      ],
-      "villains":[
-         "TheBaddies"
-      ],
-      "teamVillains":[
-         "TheHugMonsterTeam"
-      ],
-      "environments":[
-         "DevStream"
-      ]
-   },
-   "variants":{
-       "Bunker":["WaywardBunkerCharacter"],
-       "TheSentinels":["TheSerpentinelsInstructions","DrMedicobraCharacter","MainsnakeCharacter","TheIdealizardCharacter","WrattleCharacter"],
-       "SkyScraper":["CentristSkyScraperNormalCharacter"],
-"BaronBlade":["BaronJeremyCharacter"],
-"Cauldron.Cricket":["NoisyCricketCharacter"],
-"CaptainThunder":["CaptainThunderstruckCharacter"]
-   },
-   "credits":[
-   "Credits can have many lines.",
-   "This line is one of them.",
-   "This line is another one of them.",
-   "This line is one of them.",
-   "This line is another one of them.","This line is one of them.",
-   "This line is another one of them.","This line is one of them.",
-   "This line is another one of them.","This line is one of them.",
-   "This line is another one of them.","This line is one of them.",
-   "This line is another one of them.","This line is one of them.",
-   "This line is another one of them.","This line is one of them.",
-   "This line is another one of them.","This line is one of them.",
-   "This line is another one of them.","This line is one of them.",
-   "This line is another one of them.","This line is one of them.",
-   "This line is another one of them.","This line is one of them.",
-   "This line is another one of them.","This line is one of them.",
-   "This line is another one of them.","This line is one of them.",
-   "This line is another one of them.","This line is one of them.",
-   "This line is another one of them.","This line is one of them.",
-   "This line is another one of them.","This line is one of them.",
-   "This line is another one of them."
-   ]
+    "title": "I.S.S.U.E. Comics (BETA)",
+    "author": "LastFrontiersman",
+    "description": ["I.S.S.U.E. Comics is my first attempt at creating a custom hero deck, hopefully with more to follow. The following cards are still in development, and will imitate Digital Wardrobe, Draw 4 play 1, end turn immediately. MixedOrders, NonVitalHit, Recon, SideKick, SolarPowerCell, YearsOfExperience"],
+    "namespace": "ISSUEComics",
+    "dll": "ISSUEComics.dll",
+    "version": "1.0.1.0",
+    "color": "FFFFFF",
+    "manualTags": [],
+    "decks": {
+        "heroes": [
+            "TMH"
+        ],
+        "villains": [],
+        "teamVillains": [],
+        "environments": []
+    },
+    "credits": [
+        "LastFrontiersman, and the folks on the Discord Server.  Thank you for all your help!"
+    ],
+    "publishedFileId": 3448674736
 }
