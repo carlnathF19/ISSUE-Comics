@@ -247,12 +247,25 @@
       "keywords": [
         "equipment"
       ],
-      "icons": [],
+      "icons": [
+        "StartOfTurnAction",
+        "AddTokens",
+        "HasPower",
+        "GainHP"
+      ],
       "body": [
-        "[This card is still in development, and will imitate Digital Wardrobe, Draw 4 play 1, end turn immediately.  ]At the start of your turn, Place a token on this card."
+        "At the start of your turn, place a token on this card."
       ],
       "powers": [
-        "Remove all tokens from this card and restore  HP where x is the number of tokens discarded this way."
+        "Remove all tokens from this card and restore X HP, where X is the number of tokens discarded this way."
+      ],
+      "tokenPools": [
+        {
+          "identifier": "SolarPowerCellPool",
+          "name": "Solar Power Cell's Token Pool",
+          "initialValue": 0,
+          "minimumValue": 0
+        }
       ],
       "flavorQuotes": []
     },
