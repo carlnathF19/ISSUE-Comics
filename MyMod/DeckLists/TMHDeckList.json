@@ -136,9 +136,13 @@
       "keywords": [
         "one-shot"
       ],
-      "icons": [],
+      "icons": [
+        "DealDamageRadiant",
+        "Manipulate"
+      ],
       "body": [
-        "The Machine Heart Deals one target X Radiant Damage, where X = the difference between his current HP and 13.   Reduce the machine hearts HP to 13."
+        "{TMH} deals one target X radiant damage, where X = the difference between his current HP and 13. Reduce [i]The Machine Heart's[/i] HP to 13.",
+        "Shuffle this card into [i]The Machine Heart's[/i] deck."
       ],
       "flavorQuotes": []
     },
