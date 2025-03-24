@@ -6,61 +6,6 @@ using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
-//Remember, use Lady of The Wood as the example of how to setup a tokenpool;
-//namespace ISSUEComics.TMH
-//{
-//	public class SolarPowerCellController : CardController
-//	{
-//		public SolarPowerCellController(Card card, TurnTakerController turnTakerController)
-//			: base(card, turnTakerController)
-//		{
-//			base.SpecialStringMaker.ShowTokenPool(base.Card.FindTokenPool(TokenPool.SolarPowerCellPoolIdentifier));
-//		}
-
-//		public override IEnumerator Play()
-//		{
-//			IEnumerator coroutine = ResetTokenValue();
-//			if (base.UseUnityCoroutines)
-//			{
-//				yield return base.GameController.StartCoroutine(coroutine);
-//			}
-//			else
-//			{
-//				base.GameController.ExhaustCoroutine(coroutine);
-//			}
-//		}
-
-//		public override void AddTriggers()
-//		{
-//			AddTrigger((DealDamageAction dd) => dd.DidDealDamage && dd.DamageSource.IsSameCard(base.Card), (DealDamageAction dd) => base.GameController.AddTokensToPool(base.Card.FindTokenPool(TokenPool.SolarPowerCellPoolIdentifier), 1, GetCardSource()), TriggerType.AddTokensToPool, TriggerTiming.After);
-//			AddTrigger((DealDamageAction dd) => dd.DidDealDamage && dd.Target == base.Card, (DealDamageAction dd) => base.GameController.AddTokensToPool(base.Card.FindTokenPool(TokenPool.SolarPowerCellPoolIdentifier), 1, GetCardSource()), TriggerType.AddTokensToPool, TriggerTiming.After, ActionDescription.DamageTaken);
-//			AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, EndOfTurnResponse, TriggerType.DealDamage);
-//			AddStartOfTurnTrigger(base.GameController.AddTokensToPool(base.Card.FindTokenPool(TokenPool.SolarPowerCellPoolIdentifier), 1, GetCardSource()));
-//			AddWhenDestroyedTrigger((DestroyCardAction dc) => ResetTokenValue(), TriggerType.Hidden);
-//			AddTrigger((MoveCardAction mc) => mc.Origin.IsInPlayAndNotUnderCard && !mc.Destination.IsInPlayAndNotUnderCard && mc.CardToMove == base.Card, (MoveCardAction mc) => ResetTokenValue(), TriggerType.ModifyTokens, TriggerTiming.After, ActionDescription.Unspecified, isConditional: false, requireActionSuccess: true, null, outOfPlayTrigger: true);
-//		}
-
-//		public IEnumerator ResetTokenValue()
-//		{
-//			base.Card.FindTokenPool(TokenPool.SolarPowerCellPoolIdentifier).SetToInitialValue();
-//			yield return null;
-//		}
-
-//		private IEnumerator EndOfTurnResponse(PhaseChangeAction p)
-//		{
-//			int X = base.Card.FindTokenPool(TokenPool.SolarPowerCellPoolIdentifier).CurrentValue + 1;
-//			IEnumerator coroutine = DealDamageToHighestHP(base.Card, 2, (Card c) => c.IsNonEnvironmentTarget, (Card c) => X, DamageType.Fire);
-//			if (base.UseUnityCoroutines)
-//			{
-//				yield return base.GameController.StartCoroutine(coroutine);
-//			}
-//			else
-//			{
-//				base.GameController.ExhaustCoroutine(coroutine);
-//			}
-//		}
-//	}
-//}
 namespace ISSUEComics.TMH
 {
 	public class SolarPowerCellCardController : CardController
@@ -68,24 +13,69 @@ namespace ISSUEComics.TMH
 		public SolarPowerCellCardController(Card card, TurnTakerController turnTakerController)
 		   : base(card, turnTakerController)
 		{
-		}
-		public override IEnumerator Play()
+            base.SpecialStringMaker.ShowTokenPool(this.Card.Identifier, "SolarPowerCellPool");
+        }
+
+        private TokenPool SolarPowerCellPool { get { return base.Card.FindTokenPool("SolarPowerCellPool"); } }
+
+        public override IEnumerator Play()
 		{
-			IEnumerator coroutine = DrawCards(base.HeroTurnTakerController, 4);
-			IEnumerator playEnumerator = SelectAndPlayCardFromHand(base.HeroTurnTakerController);
-			IEnumerator end2 = base.GameController.ImmediatelyEndTurn(base.HeroTurnTakerController, GetCardSource());
-			if (base.UseUnityCoroutines)
-			{
-				yield return base.GameController.StartCoroutine(coroutine);
-				yield return base.GameController.StartCoroutine(playEnumerator);
-				yield return base.GameController.StartCoroutine(end2);
-			}
-			else
-			{
-				base.GameController.ExhaustCoroutine(coroutine);
-				base.GameController.ExhaustCoroutine(playEnumerator);
-				base.GameController.ExhaustCoroutine(end2);
-			}
-		}
-	}
+            //Make sure this card has no tokens on it when it enteres play.
+            IEnumerator coroutine = ResetTokenValue();
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+        }
+
+        public IEnumerator ResetTokenValue()
+        {
+            SolarPowerCellPool.SetToInitialValue();
+            yield return null;
+        }
+
+        public override void AddTriggers()
+        {
+            //At the start of your turn, place a token on this card.
+            AddStartOfTurnTrigger((TurnTaker tt) => tt == this.TurnTaker, (PhaseChangeAction pca) => base.GameController.AddTokensToPool(SolarPowerCellPool, 1, GetCardSource()), TriggerType.AddTokensToPool);
+
+            //Reset token pool to 0 when this card leaves play
+            AddWhenDestroyedTrigger((DestroyCardAction dc) => ResetTokenValue(), TriggerType.Hidden);
+            AddTrigger((MoveCardAction mc) => mc.Origin.IsInPlayAndNotUnderCard && !mc.Destination.IsInPlayAndNotUnderCard && mc.CardToMove == base.Card, (MoveCardAction mc) => ResetTokenValue(), TriggerType.ModifyTokens, TriggerTiming.After, ActionDescription.Unspecified, isConditional: false, requireActionSuccess: true, null, outOfPlayTrigger: true);
+        }
+
+        public override IEnumerator UsePower(int index = 0)
+        {
+            //Remove all tokens from this card...
+
+            //The results of removing tokens are stored in "results" so we can tell how many were removed
+            List<RemoveTokensFromPoolAction> results = new List<RemoveTokensFromPoolAction>();
+
+            IEnumerator coroutine = base.GameController.RemoveTokensFromPool(SolarPowerCellPool, SolarPowerCellPool.CurrentValue, results, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            //...and restore X HP, where X is the number of tokens discarded this way.
+            int X = GetNumberOfTokensRemoved(results);
+            coroutine = base.GameController.GainHP(this.CharacterCard, X, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+        }
+    }
 }
