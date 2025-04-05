@@ -38,72 +38,80 @@ namespace ISSUEComics.TMH
                         }
                         break;
                     }
+                                       
 
-                    //    case 1:
-                    //        {
-                    //            List<SelectLocationDecision> chosenDeckDecisions = new List<SelectLocationDecision>();
-                    //            IEnumerator chooseDeck = base.GameController.SelectADeck(DecisionMaker, SelectionType.RevealCardsFromDeck, (Location l) => l.IsHero && l.HasCards, chosenDeckDecisions, optional: false, "All hero decks are empty! What happened?!", GetCardSource());
-                    //            if (base.UseUnityCoroutines)
-                    //            {
-                    //                yield return base.GameController.StartCoroutine(chooseDeck);
-                    //            }
-                    //            else
-                    //            {
-                    //                base.GameController.ExhaustCoroutine(chooseDeck);
-                    //            }
-                    //            if (DidSelectLocation(chosenDeckDecisions))
-                    //            {
-                    //                Location chosenDeck = chosenDeckDecisions.FirstOrDefault().SelectedLocation.Location;
-                    //                List<Card> revealedCards = new List<Card>();
-                    //                List<RevealCardsAction> revealCardActions = new List<RevealCardsAction>();
-                    //                IEnumerator revealTopThree = base.GameController.RevealCards(DecisionMaker, chosenDeck, (Card c) => true, 3, revealCardActions, RevealedCardDisplay.Message, GetCardSource());
-                    //                if (base.UseUnityCoroutines)
-                    //                {
-                    //                    yield return base.GameController.StartCoroutine(revealTopThree);
-                    //                }
-                    //                else
-                    //                {
-                    //                    base.GameController.ExhaustCoroutine(revealTopThree);
-                    //                }
-                    //                IEnumerator replaceTopThree = base.GameController.BulkMoveCards(DecisionMaker, revealedCards, chosenDeck, toBottom: false, performBeforeDestroyActions: true, null, isDiscard: false, GetCardSource());
-                    //                if (base.UseUnityCoroutines)
-                    //                {
-                    //                    yield return base.GameController.StartCoroutine(replaceTopThree);
-                    //                }
-                    //                else
-                    //                {
-                    //                    base.GameController.ExhaustCoroutine(replaceTopThree);
-                    //                }
-                    //                int randomNumber = base.Game.RNG.Next(Math.Min(3, chosenDeck.NumberOfCards));
-                    //                string nth = "";
-                    //                switch (randomNumber)
-                    //                {
-                    //                    case 0:
-                    //                        nth = "first";
-                    //                        break;
-                    //                    case 1:
-                    //                        nth = "second";
-                    //                        break;
-                    //                    case 2:
-                    //                        nth = "third";
-                    //                        break;
-                    //                }
-                    //                string message = base.CharacterCard.Title + " plays the " + nth + " card from the top of " + chosenDeck.GetFriendlyName() + "!";
-                    //                base.GameController.SendMessageAction(message, Priority.High, GetCardSource(), null, showCardSource: true);
-                    //                Card selectedCard = chosenDeck.GetTopCards(randomNumber + 1).LastOrDefault();
-                    //                IEnumerator shuffleDeck = base.GameController.ShuffleLocation(chosenDeck, null, GetCardSource());
-                    //                if (base.UseUnityCoroutines)
-                    //                {
-                    //                    yield return base.GameController.StartCoroutine(shuffleDeck);
-                    //                }
-                    //                else
-                    //                {
-                    //                    base.GameController.ExhaustCoroutine(shuffleDeck);
-                    //                }
-                    //                base.GameController.PlayCard(base.GameController.FindTurnTakerController(selectedCard.Owner), selectedCard, isPutIntoPlay: false, null, optional: false, null, null, evenIfAlreadyInPlay: false, null, null, null, associateCardSource: false, fromBottom: false, canBeCancelled: true, GetCardSource());
-                    //            }
-                    //            break;
-                    //        }
+                case 1:
+                    {
+                        List<Card> cards = new List<Card>();
+                        IEnumerator coroutine = base.GameController.RevealCards(base.HeroTurnTakerController, FindEnvironment().TurnTaker.Deck, 1, cards, fromBottom: false, RevealedCardDisplay.None, null, GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
+                        Card revealedCard = GetRevealedCard(cards);
+                        if (revealedCard != null)
+                        {
+                            YesNoDecision yesNo = new YesNoCardDecision(base.GameController, DecisionMaker, SelectionType.DiscardCard, revealedCard, null, null, GetCardSource());
+                            List<IDecision> decisionSources = new List<IDecision> { yesNo };
+                            IEnumerator coroutine2 = base.GameController.MakeDecisionAction(yesNo);
+                            if (base.UseUnityCoroutines)
+                            {
+                                yield return base.GameController.StartCoroutine(coroutine2);
+                            }
+                            else
+                            {
+                                base.GameController.ExhaustCoroutine(coroutine2);
+                            }
+                            if (DidPlayerAnswerYes(yesNo))
+                            {
+                                IEnumerator coroutine3 = base.GameController.DiscardCard(DecisionMaker, revealedCard, decisionSources, null, null, GetCardSource());
+                                if (base.UseUnityCoroutines)
+                                {
+                                    yield return base.GameController.StartCoroutine(coroutine3);
+                                }
+                                else
+                                {
+                                    base.GameController.ExhaustCoroutine(coroutine3);
+                                }
+                            }
+                            if (yesNo != null && yesNo.Completed && yesNo.Answer.HasValue)
+                            {
+                                decisionSources.Add(yesNo);
+                                if (!yesNo.Answer.Value)
+                                {
+                                    GameController gameController = base.GameController;
+                                    TurnTakerController turnTakerController = base.TurnTakerController;
+                                    Location deck = FindEnvironment().TurnTaker.Deck;
+                                    CardSource cardSource = GetCardSource();
+                                    IEnumerator coroutine4 = gameController.MoveCard(turnTakerController, revealedCard, deck, toBottom: false, isPutIntoPlay: false, playCardIfMovingToPlayArea: true, null, showMessage: false, null, null, null, evenIfIndestructible: false, flipFaceDown: false, null, isDiscard: false, evenIfPretendGameOver: false, shuffledTrashIntoDeck: false, doesNotEnterPlay: false, cardSource);
+                                    if (base.UseUnityCoroutines)
+                                    {
+                                        yield return base.GameController.StartCoroutine(coroutine4);
+                                    }
+                                    else
+                                    {
+                                        base.GameController.ExhaustCoroutine(coroutine4);
+                                    }
+                                }
+                            }
+                        }
+                        IEnumerator coroutine5 = CleanupCardsAtLocations(new List<Location> { base.TurnTaker.Revealed }, FindEnvironment().TurnTaker.Deck, toBottom: false, addInhibitorException: true, shuffleAfterwards: false, sendMessage: false, isDiscard: false, isReturnedToOriginalLocation: false, cards);
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine5);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine5);
+                        }
+
+
+                        break;
+                    }
                     //    case 2:
 
                     //        {

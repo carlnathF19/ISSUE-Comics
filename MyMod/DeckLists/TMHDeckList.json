@@ -23,7 +23,7 @@
       "hitpoints": 26,
       "incapacitatedAbilities": [
         "One Player May Draw a card now.",
-        "Reveal the top card of the environmen deck, discard or replace card on top of the deck.",
+        "Reveal the top card of the environment deck, discard or replace card on top of the deck.",
         "prevent the next damage dealt to a hero target."
       ],
       "flippedIcons": [],
@@ -240,7 +240,7 @@
       ],
       "icons": [],
       "body": [
-        "[This card is still in development, and will imitate Digital Wardrobe, Draw 4 play 1, end turn immediately.  ]Place this card next to target hero, TMH may redirect damage from this target to himself"
+        "Place this card next to target hero, TMH may redirect damage from this target to himself"
       ],
       "flavorQuotes": []
     },
