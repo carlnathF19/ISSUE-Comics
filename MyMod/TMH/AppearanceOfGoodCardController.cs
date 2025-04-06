@@ -17,7 +17,7 @@ namespace ISSUEComics.TMH
         }
        public override void AddTriggers()
 	    {
-            AddReduceDamageTrigger((Card c) => IsHero(c), 1);
+            AddReduceDamageTrigger((Card c) => IsHeroCharacterCard(c), 1);
             AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, base.DestroyThisCardResponse, TriggerType.DestroySelf);
             AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, (PhaseChangeAction p) => base.GameController.GainHP(base.CharacterCard, 2, null, null, GetCardSource()), TriggerType.GainHP, null, ignoreBattleZone: true);
         }

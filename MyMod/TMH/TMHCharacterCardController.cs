@@ -150,22 +150,62 @@ namespace ISSUEComics.TMH
                     
             }
         }
-
         public override IEnumerator UsePower(int index = 0)
         {
-            
-            DamageType? damageTypeThatTMHWillReflect = GetDamageTypeThatTMHWillReflect();
-
-            ReduceDamageStatusEffect reduceDamageStatusEffect = new ReduceDamageStatusEffect(GetPowerNumeral(0, 1));
-            reduceDamageStatusEffect.TargetCriteria.IsSpecificCard = base.Card;
-            reduceDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
-
-            AddCounterDamageTrigger((DealDamageAction dd) => dd.Target == base.CharacterCard, () => base.CharacterCard, () => base.CharacterCard, oncePerTargetPerTurn: false, 1, /*DamageType.Cold);*/ damageTypeThatTMHWillReflect.Value);
-
-            return AddStatusEffect(reduceDamageStatusEffect);
-
+            //Void Guard Road Warrior base power
+            int powerNumeral = GetPowerNumeral(0, 1);
+            int[] powerNumerals = new int[1] { powerNumeral };
+            OnDealDamageStatusEffect onDealDamageStatusEffect = new OnDealDamageStatusEffect(base.CardWithoutReplacements, "CounterDamageResponse", $"Whenever a target deals damage to {base.Card.Title}, he may reflect (deal) {powerNumeral} damage of that type to that target.", new TriggerType[1] { TriggerType.DealDamage }, base.TurnTaker, base.Card, powerNumerals);
+            onDealDamageStatusEffect.SourceCriteria.IsTarget = true;
+            onDealDamageStatusEffect.TargetCriteria.IsSpecificCard = base.Card;
+            onDealDamageStatusEffect.DamageAmountCriteria.GreaterThan = 0;
+            onDealDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
+            onDealDamageStatusEffect.UntilTargetLeavesPlay(base.Card);
+            onDealDamageStatusEffect.BeforeOrAfter = BeforeOrAfter.After;
+            onDealDamageStatusEffect.DoesDealDamage = true;
+            IEnumerator coroutine = AddStatusEffect(onDealDamageStatusEffect);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
         }
-        //AdaptivePlatingSubroutine
+        public IEnumerator CounterDamageResponse(DealDamageAction dd, TurnTaker hero, StatusEffect effect, int[] powerNumerals = null)
+        {
+            DamageType? damageTypeThatTMHWillReflect = GetDamageTypeThatTMHWillReflect();
+            int? num = null;
+            if (powerNumerals != null)
+            {
+                num = powerNumerals.ElementAtOrDefault(0);
+            }
+            if (!num.HasValue)
+            {
+                num = 1;
+            }
+            if (dd.DamageSource.IsCard)
+            {
+                Card source = base.Card;
+                if (hero != null && hero.IsPlayer)
+                {
+                    source = hero.CharacterCard;
+                }
+
+                IEnumerator coroutine = DealDamage(source, dd.DamageSource.Card, num.Value, damageTypeThatTMHWillReflect.Value /* DamageType.Melee*/, isIrreducible: false, optional: true, isCounterDamage: true, null, null, null, ignoreBattleZone: false, GetCardSource(effect));
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+        }
+       
+        ////AdaptivePlatingSubroutine
         private DamageType? GetDamageTypeThatTMHWillReflect()
         {
             DealDamageJournalEntry dealDamageJournalEntry = base.GameController.Game.Journal.MostRecentDealDamageEntry((DealDamageJournalEntry e) => e.TargetCard == base.CharacterCard && e.Amount > 0);
