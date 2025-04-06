@@ -26,7 +26,7 @@ namespace ISSUEComics.TMH
 			int? requiredTargets = powerNumeral3;
 			CardSource cardSource = GetCardSource();
 			IEnumerator coroutine = gameController.SelectTargetsAndDealDamage(decisionMaker, source, powerNumeral2, DamageType.Radiant, numberOfTargets, optional: false, requiredTargets, isIrreducible: false, allowAutoDecide: false, autoDecide: false, null, null, null, null, null, selectTargetsEvenIfCannotDealDamage: false, null, null, ignoreBattleZone: false, null, cardSource);
-			IEnumerator coroutine2 = DealDamage(base.CharacterCard, base.CharacterCard, powerNumeral, DamageType.Energy, isIrreducible: false, optional: true, isCounterDamage: false, null);
+			IEnumerator coroutine2 = DealDamage(base.CharacterCard, base.CharacterCard, powerNumeral, DamageType.Energy, isIrreducible: false, optional: false, isCounterDamage: false, null);
 
 			if (base.UseUnityCoroutines)
 			{
