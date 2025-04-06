@@ -38,7 +38,7 @@ namespace ISSUEComics.TMH
                         }
                         break;
                     }
-                                       
+
 
                 case 1:
                     {
@@ -112,71 +112,90 @@ namespace ISSUEComics.TMH
 
                         break;
                     }
-                    //    case 2:
+                case 2:
+                    {
 
-                    //        {
-                    //            List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
-                    //            IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.ReduceDamageDealt, new LinqCardCriteria((Card c) => c.IsInPlay && c.IsTarget, "target", useCardsSuffix: false, useCardsPrefix: false, null, "targets"), storedResults, optional: false, allowAutoDecide: false, null, includeRealCardsOnly: true, GetCardSource());
-                    //            if (base.UseUnityCoroutines)
-                    //            {
-                    //                yield return base.GameController.StartCoroutine(coroutine);
-                    //            }
-                    //            else
-                    //            {
-                    //                base.GameController.ExhaustCoroutine(coroutine);
-                    //            }
-                    //            SelectCardDecision selected = storedResults.FirstOrDefault();
-                    //            if (selected != null && selected.SelectedCard != null)
-                    //            {
-                    //                ReduceDamageStatusEffect reduceDamageStatusEffect = new ReduceDamageStatusEffect(GetPowerNumeral(0, 1));
-                    //                reduceDamageStatusEffect.SourceCriteria.IsSpecificCard = selected.SelectedCard;
-                    //                reduceDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
-                    //                reduceDamageStatusEffect.UntilTargetLeavesPlay(selected.SelectedCard);
-                    //                coroutine = AddStatusEffect(reduceDamageStatusEffect);
-                    //                if (base.UseUnityCoroutines)
-                    //                {
-                    //                    yield return base.GameController.StartCoroutine(coroutine);
-                    //                }
-                    //                else
-                    //                {
-                    //                    base.GameController.ExhaustCoroutine(coroutine);
-                    //                }
+                        CannotDealDamageStatusEffect cannotDealDamageStatusEffect = new CannotDealDamageStatusEffect();
+                        cannotDealDamageStatusEffect.TargetCriteria.IsHero = true;
+                        cannotDealDamageStatusEffect.NumberOfUses = 1;
+                        cannotDealDamageStatusEffect.IsPreventEffect = true;
+                        cannotDealDamageStatusEffect.BattleZoneSource = base.CharacterCard;
 
-                    //            }
-                    //        }
+                        IEnumerator TMHPreventDamage = AddStatusEffect(cannotDealDamageStatusEffect);
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(TMHPreventDamage);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(TMHPreventDamage);
+                        }                      
+
+                        break;
+                    }
+                //case 2:
+                //    {
+                //        //IntoTheShadowsCardController
+                //        protected override IEnumerator TacticEffect()
+                //        {
+                //            CannotDealDamageStatusEffect cannotDealDamageStatusEffect = new CannotDealDamageStatusEffect();
+                //            cannotDealDamageStatusEffect.TargetCriteria.IsHero=true;
+                //            cannotDealDamageStatusEffect.NumberOfUses = 1;
+                //            cannotDealDamageStatusEffect.IsPreventEffect = true;
+                //            cannotDealDamageStatusEffect.BattleZoneSource = base.CharacterCard;
+                //            return AddStatusEffect(cannotDealDamageStatusEffect);
+                //        }
+                //        break;
+                //    }
+                    
             }
         }
 
         public override IEnumerator UsePower(int index = 0)
         {
+            
+            DamageType? damageTypeThatTMHWillReflect = GetDamageTypeThatTMHWillReflect();
+
             ReduceDamageStatusEffect reduceDamageStatusEffect = new ReduceDamageStatusEffect(GetPowerNumeral(0, 1));
             reduceDamageStatusEffect.TargetCriteria.IsSpecificCard = base.Card;
             reduceDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
 
-            //Will this reduce the damage until the start of the next turn.
-            //DamageType? damageTypeThatTMHWillDeal = GetDamageTypeThatTMHWillDeal();
-
-            AddCounterDamageTrigger((DealDamageAction dd) => dd.Target == base.CharacterCard, () => base.CharacterCard, () => base.CharacterCard, oncePerTargetPerTurn: false, 1, DamageType.Energy);
-
-            //OnDealDamageStatusEffect onDealDamageStatusEffect = new OnDealDamageStatusEffect(base.Card, DealDamage, );
+            AddCounterDamageTrigger((DealDamageAction dd) => dd.Target == base.CharacterCard, () => base.CharacterCard, () => base.CharacterCard, oncePerTargetPerTurn: false, 1, /*DamageType.Cold);*/ damageTypeThatTMHWillReflect.Value);
 
             return AddStatusEffect(reduceDamageStatusEffect);
 
         }
-        //private DamageType? GetDamageTypeThatTMHWillDeal()
-        //{
-        //    DealDamageJournalEntry dealDamageJournalEntry = base.GameController.Game.Journal.MostRecentDealDamageEntry((DealDamageJournalEntry e) => e.TargetCard == base.CharacterCard && e.Amount > 0);
-        //    PlayCardJournalEntry playCardJournalEntry = base.GameController.Game.Journal.QueryJournalEntries((PlayCardJournalEntry e) => e.CardPlayed == base.Card).LastOrDefault();
-        //    if (playCardJournalEntry != null)
-        //    {
-        //        int? entryIndex = base.GameController.Game.Journal.GetEntryIndex(dealDamageJournalEntry);
-        //        int? entryIndex2 = base.GameController.Game.Journal.GetEntryIndex(playCardJournalEntry);
-        //        if (entryIndex.HasValue && entryIndex2.HasValue && entryIndex.Value > entryIndex2.Value)
-        //        {
-        //            return dealDamageJournalEntry.DamageType;
-        //        }
-        //    }
-        //    return null;
-        //}
-    }
+        //AdaptivePlatingSubroutine
+        private DamageType? GetDamageTypeThatTMHWillReflect()
+        {
+            DealDamageJournalEntry dealDamageJournalEntry = base.GameController.Game.Journal.MostRecentDealDamageEntry((DealDamageJournalEntry e) => e.TargetCard == base.CharacterCard && e.Amount > 0);
+            PlayCardJournalEntry playCardJournalEntry = base.GameController.Game.Journal.QueryJournalEntries((PlayCardJournalEntry e) => e.CardPlayed == base.Card).LastOrDefault();
+            //if (playCardJournalEntry != null)
+            //{
+                int? entryIndex = base.GameController.Game.Journal.GetEntryIndex(dealDamageJournalEntry);
+                //int? entryIndex2 = base.GameController.Game.Journal.GetEntryIndex(playCardJournalEntry);
+                if (entryIndex.HasValue)
+                {
+                    return dealDamageJournalEntry.DamageType;
+                }
+            //}
+            return null;
+
+        }
+            //private DamageType? GetDamageTypeThatTMHWillDeal()
+            //{
+            //    DealDamageJournalEntry dealDamageJournalEntry = base.GameController.Game.Journal.MostRecentDealDamageEntry((DealDamageJournalEntry e) => e.TargetCard == base.CharacterCard && e.Amount > 0);
+            //    PlayCardJournalEntry playCardJournalEntry = base.GameController.Game.Journal.QueryJournalEntries((PlayCardJournalEntry e) => e.CardPlayed == base.Card).LastOrDefault();
+            //    if (playCardJournalEntry != null)
+            //    {
+            //        int? entryIndex = base.GameController.Game.Journal.GetEntryIndex(dealDamageJournalEntry);
+            //        int? entryIndex2 = base.GameController.Game.Journal.GetEntryIndex(playCardJournalEntry);
+            //        if (entryIndex.HasValue && entryIndex2.HasValue && entryIndex.Value > entryIndex2.Value)
+            //        {
+            //            return dealDamageJournalEntry.DamageType;
+            //        }
+            //    }
+            //    return null;
+            //}
+        }
 }
