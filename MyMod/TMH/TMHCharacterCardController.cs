@@ -132,22 +132,7 @@ namespace ISSUEComics.TMH
                         }                      
 
                         break;
-                    }
-                //case 2:
-                //    {
-                //        //IntoTheShadowsCardController
-                //        protected override IEnumerator TacticEffect()
-                //        {
-                //            CannotDealDamageStatusEffect cannotDealDamageStatusEffect = new CannotDealDamageStatusEffect();
-                //            cannotDealDamageStatusEffect.TargetCriteria.IsHero=true;
-                //            cannotDealDamageStatusEffect.NumberOfUses = 1;
-                //            cannotDealDamageStatusEffect.IsPreventEffect = true;
-                //            cannotDealDamageStatusEffect.BattleZoneSource = base.CharacterCard;
-                //            return AddStatusEffect(cannotDealDamageStatusEffect);
-                //        }
-                //        break;
-                //    }
-                    
+                    }                                   
             }
         }
         public override IEnumerator UsePower(int index = 0)
