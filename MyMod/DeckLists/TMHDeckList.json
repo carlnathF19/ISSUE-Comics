@@ -11,7 +11,7 @@
       "identifier": "TMHCharacter",
       "count": 1,
       "title": "The Machine Heart",
-      "body": "",
+      "body": "Reflector Shield",
       "backgroundColor": "bd3a3d",
       "foilBackgroundColor": "bd3a3d",
       "hitpointsColor": "bd3a3d",
@@ -23,7 +23,7 @@
       "hitpoints": 26,
       "incapacitatedAbilities": [
         "One Player May Draw a card now.",
-        "Reveal the top card of the environmen deck, discard or replace card on top of the deck.",
+        "Reveal the top card of the environment deck, discard or replace card on top of the deck.",
         "prevent the next damage dealt to a hero target."
       ],
       "flippedIcons": [],
@@ -136,9 +136,13 @@
       "keywords": [
         "one-shot"
       ],
-      "icons": [],
+      "icons": [
+        "DealDamageRadiant",
+        "Manipulate"
+      ],
       "body": [
-        "The Machine Heart Deals one target X Radiant Damage, where X = the difference between his current HP and 13.   Reduce the machine hearts HP to 13."
+        "{TMH} deals one target X radiant damage, where X = the difference between his current HP and 13. Reduce [i]The Machine Heart's[/i] HP to 13.",
+        "Shuffle this card into [i]The Machine Heart's[/i] deck."
       ],
       "flavorQuotes": []
     },
@@ -193,7 +197,7 @@
       "keywords": [],
       "icons": [],
       "body": [
-        "(This card is still in development, and will imitate Digital Wardrobe, Draw 4 play 1, end turn immediately.  ) Immune to Projectile damage, immune to melee damage."
+        "Immune to Projectile damage, immune to melee damage."
       ],
       "powers": [
         "Prevent all damage to the machine heart until the start of your next turn, then destroy this card."
@@ -223,7 +227,7 @@
       ],
       "icons": [],
       "body": [
-        "[This card is still in development, and will imitate Digital Wardrobe, Draw 4 play 1, end turn immediately.  ]Reveal top card of Environment Deck.  If this card is a target, discard it and gain 2 health.  If not replace the card, you may use 1 power now."
+        "Reveal top card of Environment Deck.  If this card is a target, discard it and gain 2 health.  If not replace the card, you may use 1 power now."
       ],
       "flavorQuotes": []
     },
@@ -236,7 +240,7 @@
       ],
       "icons": [],
       "body": [
-        "[This card is still in development, and will imitate Digital Wardrobe, Draw 4 play 1, end turn immediately.  ]Place this card next to target hero, TMH may redirect damage from this target to himself"
+        "Place this card next to target hero, TMH may redirect damage from this target to himself"
       ],
       "flavorQuotes": []
     },
@@ -247,12 +251,25 @@
       "keywords": [
         "equipment"
       ],
-      "icons": [],
+      "icons": [
+        "StartOfTurnAction",
+        "AddTokens",
+        "HasPower",
+        "GainHP"
+      ],
       "body": [
-        "[This card is still in development, and will imitate Digital Wardrobe, Draw 4 play 1, end turn immediately.  ]At the start of your turn, Place a token on this card."
+        "At the start of your turn, place a token on this card."
       ],
       "powers": [
-        "Remove all tokens from this card and restore  HP where x is the number of tokens discarded this way."
+        "Remove all tokens from this card and restore X HP, where X is the number of tokens discarded this way."
+      ],
+      "tokenPools": [
+        {
+          "identifier": "SolarPowerCellPool",
+          "name": "Solar Power Cell's Token Pool",
+          "initialValue": 0,
+          "minimumValue": 0
+        }
       ],
       "flavorQuotes": []
     },
@@ -265,7 +282,7 @@
       ],
       "icons": [],
       "body": [
-        "[This card is still in development, and will imitate Digital Wardrobe, Draw 4 play 1, end turn immediately.  ]The Machine Heart searches through his deck for 3 cards, puts two in his hand and discards the third"
+        "The Machine Heart searches through his deck for 3 cards, puts two in his hand and discards the third.  Shuffle the deck."
       ],
       "flavorQuotes": []
     }

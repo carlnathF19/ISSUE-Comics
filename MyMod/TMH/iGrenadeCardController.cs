@@ -26,27 +26,35 @@ namespace ISSUEComics.TMH
 			int? requiredTargets = 1;
 			CardSource cardSource = GetCardSource();
 
-			IEnumerator coroutine = GameController.SetHP(base.CharacterCard, 13, [CardSource = cardSource = null]);
-			if (base.UseUnityCoroutines)
-			{
-				yield return base.GameController.StartCoroutine(coroutine);
-			}
-			else
-			{
-				base.GameController.ExhaustCoroutine(coroutine);
-			}
+            if (base.CharacterCard.HitPoints > 13)
+            {
+                //{TMH} deals one target X radiant damage, where X = the difference between his current HP and 13.
+                IEnumerator coroutine2 = base.GameController.SelectTargetsAndDealDamage(decisionMaker, source, xDamage, DamageType.Radiant, numberOfTargets, optional: false, requiredTargets, isIrreducible: false, allowAutoDecide: false, autoDecide: false, null, null, null, null, null, selectTargetsEvenIfCannotDealDamage: false, null, null, ignoreBattleZone: false, null, cardSource);
+				if (base.UseUnityCoroutines)
+				{
+					yield return base.GameController.StartCoroutine(coroutine2);
+				}
+				else
+				{
+					base.GameController.ExhaustCoroutine(coroutine2);
+				}
 
-			IEnumerator coroutine2 = base.GameController.SelectTargetsAndDealDamage(decisionMaker, source, xDamage, DamageType.Radiant, numberOfTargets, optional: false, requiredTargets, isIrreducible: true, allowAutoDecide: false, autoDecide: false, null, null, null, null, null, selectTargetsEvenIfCannotDealDamage: false, null, null, ignoreBattleZone: false, null, cardSource);
-			if (base.UseUnityCoroutines)
-			{
-				yield return base.GameController.StartCoroutine(coroutine2);
-			}
-			else
-			{
-				base.GameController.ExhaustCoroutine(coroutine2);
-			}			
+				//Reduce [i]The Machine Heart's[/i] HP to 13.
+			
+                IEnumerator coroutine = base.GameController.SetHP(base.CharacterCard, 13, GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            
 
-			IEnumerator coroutine3 = base.GameController.ShuffleCardIntoLocation(DecisionMaker, base.Card, base.TurnTaker.Deck, optional: false, toBottom: false, GetCardSource());
+            //Shuffle this card into [i]The Machine Heart's[/i] deck.
+            IEnumerator coroutine3 = base.GameController.ShuffleCardIntoLocation(DecisionMaker, base.Card, base.TurnTaker.Deck, optional: false, toBottom: false, GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine3);
@@ -57,6 +65,7 @@ namespace ISSUEComics.TMH
 			}
 		}
 
+		//Calculate Current HP - 13.
 		private int GetXDamage()
 		{
 			if (base.CharacterCard.HitPoints.Value > 13)
@@ -68,5 +77,8 @@ namespace ISSUEComics.TMH
 				return 0;
 			}
 		}
-	}
+
+		//Tell the game to not move this card to the trash after it is moved to the deck.
+		public override bool DoNotMoveOneShotToTrash => true;
+    }
 }

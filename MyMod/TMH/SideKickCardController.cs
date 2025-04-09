@@ -14,23 +14,19 @@ namespace ISSUEComics.TMH
 		   : base(card, turnTakerController)
 		{
 		}
-		public override IEnumerator Play()
+		//From ImpaleCardController
+		public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
 		{
-			IEnumerator coroutine = DrawCards(base.HeroTurnTakerController, 4);
-			IEnumerator playEnumerator = SelectAndPlayCardFromHand(base.HeroTurnTakerController);
-			IEnumerator end2 = base.GameController.ImmediatelyEndTurn(base.HeroTurnTakerController, GetCardSource());
-			if (base.UseUnityCoroutines)
-			{
-				yield return base.GameController.StartCoroutine(coroutine);
-				yield return base.GameController.StartCoroutine(playEnumerator);
-				yield return base.GameController.StartCoroutine(end2);
-			}
-			else
-			{
-				base.GameController.ExhaustCoroutine(coroutine);
-				base.GameController.ExhaustCoroutine(playEnumerator);
-				base.GameController.ExhaustCoroutine(end2);
-			}
+			return SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => c.IsTarget && IsHeroCharacterCard(c), "Hero Characters", useCardsSuffix: false), storedResults, isPutIntoPlay, decisionSources);
 		}
-	}
+
+        public override void AddTriggers()
+        {
+            AddRedirectDamageTrigger((DealDamageAction dd) => dd.DamageSource.IsCard && dd.DamageSource.Card.IsTarget && dd.Target == GetCardThisCardIsNextTo(), () => base.CharacterCard, optional: true);
+        }
+
+
+    }
 }
+
+

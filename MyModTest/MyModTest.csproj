@@ -40,20 +40,17 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="EngineCommon">
-      <HintPath>..\..\..\..\Library\Application Support\Steam\steamapps\common\Sentinels of the Multiverse\Sentinels.app\Contents\Resources\Data\Managed\EngineCommon.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Library\Application Support\Steam\steamapps\common\Sentinels of the Multiverse\Sentinels.app\Contents\Resources\Data\Managed\EngineCommon.dll</HintPath>
     </Reference>
     <Reference Include="SentinelsEngine">
-      <HintPath>..\..\..\..\Library\Application Support\Steam\steamapps\common\Sentinels of the Multiverse\Sentinels.app\Contents\Resources\Data\Managed\SentinelsEngine.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Library\Application Support\Steam\steamapps\common\Sentinels of the Multiverse\Sentinels.app\Contents\Resources\Data\Managed\SentinelsEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Test.cs" />
     <Compile Include="BaseTest.cs" />
     <Compile Include="Setup.cs" />
-    <Compile Include="VariantTest.cs" />
-    <Compile Include="MigrantCoderTest.cs" />
+    <Compile Include="TMHTest.cs" />
     <Compile Include="RandomGameTest.cs" />
-    <Compile Include="MyRandomTest.cs" />
     <Compile Include="ExperimentTest.cs" />
   </ItemGroup>
   <ItemGroup>

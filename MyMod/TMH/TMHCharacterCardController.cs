@@ -39,136 +39,188 @@ namespace ISSUEComics.TMH
                         break;
                     }
 
-                    //    case 1:
-                    //        {
-                    //            List<SelectLocationDecision> chosenDeckDecisions = new List<SelectLocationDecision>();
-                    //            IEnumerator chooseDeck = base.GameController.SelectADeck(DecisionMaker, SelectionType.RevealCardsFromDeck, (Location l) => l.IsHero && l.HasCards, chosenDeckDecisions, optional: false, "All hero decks are empty! What happened?!", GetCardSource());
-                    //            if (base.UseUnityCoroutines)
-                    //            {
-                    //                yield return base.GameController.StartCoroutine(chooseDeck);
-                    //            }
-                    //            else
-                    //            {
-                    //                base.GameController.ExhaustCoroutine(chooseDeck);
-                    //            }
-                    //            if (DidSelectLocation(chosenDeckDecisions))
-                    //            {
-                    //                Location chosenDeck = chosenDeckDecisions.FirstOrDefault().SelectedLocation.Location;
-                    //                List<Card> revealedCards = new List<Card>();
-                    //                List<RevealCardsAction> revealCardActions = new List<RevealCardsAction>();
-                    //                IEnumerator revealTopThree = base.GameController.RevealCards(DecisionMaker, chosenDeck, (Card c) => true, 3, revealCardActions, RevealedCardDisplay.Message, GetCardSource());
-                    //                if (base.UseUnityCoroutines)
-                    //                {
-                    //                    yield return base.GameController.StartCoroutine(revealTopThree);
-                    //                }
-                    //                else
-                    //                {
-                    //                    base.GameController.ExhaustCoroutine(revealTopThree);
-                    //                }
-                    //                IEnumerator replaceTopThree = base.GameController.BulkMoveCards(DecisionMaker, revealedCards, chosenDeck, toBottom: false, performBeforeDestroyActions: true, null, isDiscard: false, GetCardSource());
-                    //                if (base.UseUnityCoroutines)
-                    //                {
-                    //                    yield return base.GameController.StartCoroutine(replaceTopThree);
-                    //                }
-                    //                else
-                    //                {
-                    //                    base.GameController.ExhaustCoroutine(replaceTopThree);
-                    //                }
-                    //                int randomNumber = base.Game.RNG.Next(Math.Min(3, chosenDeck.NumberOfCards));
-                    //                string nth = "";
-                    //                switch (randomNumber)
-                    //                {
-                    //                    case 0:
-                    //                        nth = "first";
-                    //                        break;
-                    //                    case 1:
-                    //                        nth = "second";
-                    //                        break;
-                    //                    case 2:
-                    //                        nth = "third";
-                    //                        break;
-                    //                }
-                    //                string message = base.CharacterCard.Title + " plays the " + nth + " card from the top of " + chosenDeck.GetFriendlyName() + "!";
-                    //                base.GameController.SendMessageAction(message, Priority.High, GetCardSource(), null, showCardSource: true);
-                    //                Card selectedCard = chosenDeck.GetTopCards(randomNumber + 1).LastOrDefault();
-                    //                IEnumerator shuffleDeck = base.GameController.ShuffleLocation(chosenDeck, null, GetCardSource());
-                    //                if (base.UseUnityCoroutines)
-                    //                {
-                    //                    yield return base.GameController.StartCoroutine(shuffleDeck);
-                    //                }
-                    //                else
-                    //                {
-                    //                    base.GameController.ExhaustCoroutine(shuffleDeck);
-                    //                }
-                    //                base.GameController.PlayCard(base.GameController.FindTurnTakerController(selectedCard.Owner), selectedCard, isPutIntoPlay: false, null, optional: false, null, null, evenIfAlreadyInPlay: false, null, null, null, associateCardSource: false, fromBottom: false, canBeCancelled: true, GetCardSource());
-                    //            }
-                    //            break;
-                    //        }
-                    //    case 2:
 
-                    //        {
-                    //            List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
-                    //            IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.ReduceDamageDealt, new LinqCardCriteria((Card c) => c.IsInPlay && c.IsTarget, "target", useCardsSuffix: false, useCardsPrefix: false, null, "targets"), storedResults, optional: false, allowAutoDecide: false, null, includeRealCardsOnly: true, GetCardSource());
-                    //            if (base.UseUnityCoroutines)
-                    //            {
-                    //                yield return base.GameController.StartCoroutine(coroutine);
-                    //            }
-                    //            else
-                    //            {
-                    //                base.GameController.ExhaustCoroutine(coroutine);
-                    //            }
-                    //            SelectCardDecision selected = storedResults.FirstOrDefault();
-                    //            if (selected != null && selected.SelectedCard != null)
-                    //            {
-                    //                ReduceDamageStatusEffect reduceDamageStatusEffect = new ReduceDamageStatusEffect(GetPowerNumeral(0, 1));
-                    //                reduceDamageStatusEffect.SourceCriteria.IsSpecificCard = selected.SelectedCard;
-                    //                reduceDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
-                    //                reduceDamageStatusEffect.UntilTargetLeavesPlay(selected.SelectedCard);
-                    //                coroutine = AddStatusEffect(reduceDamageStatusEffect);
-                    //                if (base.UseUnityCoroutines)
-                    //                {
-                    //                    yield return base.GameController.StartCoroutine(coroutine);
-                    //                }
-                    //                else
-                    //                {
-                    //                    base.GameController.ExhaustCoroutine(coroutine);
-                    //                }
+                case 1:
+                    {
+                        List<Card> cards = new List<Card>();
+                        IEnumerator coroutine = base.GameController.RevealCards(base.HeroTurnTakerController, FindEnvironment().TurnTaker.Deck, 1, cards, fromBottom: false, RevealedCardDisplay.None, null, GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
+                        Card revealedCard = GetRevealedCard(cards);
+                        if (revealedCard != null)
+                        {
+                            YesNoDecision yesNo = new YesNoCardDecision(base.GameController, DecisionMaker, SelectionType.DiscardCard, revealedCard, null, null, GetCardSource());
+                            List<IDecision> decisionSources = new List<IDecision> { yesNo };
+                            IEnumerator coroutine2 = base.GameController.MakeDecisionAction(yesNo);
+                            if (base.UseUnityCoroutines)
+                            {
+                                yield return base.GameController.StartCoroutine(coroutine2);
+                            }
+                            else
+                            {
+                                base.GameController.ExhaustCoroutine(coroutine2);
+                            }
+                            if (DidPlayerAnswerYes(yesNo))
+                            {
+                                IEnumerator coroutine3 = base.GameController.DiscardCard(DecisionMaker, revealedCard, decisionSources, null, null, GetCardSource());
+                                if (base.UseUnityCoroutines)
+                                {
+                                    yield return base.GameController.StartCoroutine(coroutine3);
+                                }
+                                else
+                                {
+                                    base.GameController.ExhaustCoroutine(coroutine3);
+                                }
+                            }
+                            if (yesNo != null && yesNo.Completed && yesNo.Answer.HasValue)
+                            {
+                                decisionSources.Add(yesNo);
+                                if (!yesNo.Answer.Value)
+                                {
+                                    GameController gameController = base.GameController;
+                                    TurnTakerController turnTakerController = base.TurnTakerController;
+                                    Location deck = FindEnvironment().TurnTaker.Deck;
+                                    CardSource cardSource = GetCardSource();
+                                    IEnumerator coroutine4 = gameController.MoveCard(turnTakerController, revealedCard, deck, toBottom: false, isPutIntoPlay: false, playCardIfMovingToPlayArea: true, null, showMessage: false, null, null, null, evenIfIndestructible: false, flipFaceDown: false, null, isDiscard: false, evenIfPretendGameOver: false, shuffledTrashIntoDeck: false, doesNotEnterPlay: false, cardSource);
+                                    if (base.UseUnityCoroutines)
+                                    {
+                                        yield return base.GameController.StartCoroutine(coroutine4);
+                                    }
+                                    else
+                                    {
+                                        base.GameController.ExhaustCoroutine(coroutine4);
+                                    }
+                                }
+                            }
+                        }
+                        IEnumerator coroutine5 = CleanupCardsAtLocations(new List<Location> { base.TurnTaker.Revealed }, FindEnvironment().TurnTaker.Deck, toBottom: false, addInhibitorException: true, shuffleAfterwards: false, sendMessage: false, isDiscard: false, isReturnedToOriginalLocation: false, cards);
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine5);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine5);
+                        }
 
-                    //            }
-                    //        }
+
+                        break;
+                    }
+                case 2:
+                    {
+
+                        CannotDealDamageStatusEffect cannotDealDamageStatusEffect = new CannotDealDamageStatusEffect();
+                        cannotDealDamageStatusEffect.TargetCriteria.IsHero = true;
+                        cannotDealDamageStatusEffect.NumberOfUses = 1;
+                        cannotDealDamageStatusEffect.IsPreventEffect = true;
+                        cannotDealDamageStatusEffect.BattleZoneSource = base.CharacterCard;
+
+                        IEnumerator TMHPreventDamage = AddStatusEffect(cannotDealDamageStatusEffect);
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(TMHPreventDamage);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(TMHPreventDamage);
+                        }                      
+
+                        break;
+                    }                                   
             }
         }
-
         public override IEnumerator UsePower(int index = 0)
         {
-            ReduceDamageStatusEffect reduceDamageStatusEffect = new ReduceDamageStatusEffect(GetPowerNumeral(0, 1));
-            reduceDamageStatusEffect.TargetCriteria.IsSpecificCard = base.Card;
-            reduceDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
+            //Void Guard Road Warrior base power
+            int powerNumeral = GetPowerNumeral(0, 1);
+            int[] powerNumerals = new int[1] { powerNumeral };
+            OnDealDamageStatusEffect onDealDamageStatusEffect = new OnDealDamageStatusEffect(base.CardWithoutReplacements, "CounterDamageResponse", $"Whenever a target deals damage to {base.Card.Title}, he may reflect (deal) {powerNumeral} damage of that type to that target.", new TriggerType[1] { TriggerType.DealDamage }, base.TurnTaker, base.Card, powerNumerals);
+            onDealDamageStatusEffect.SourceCriteria.IsTarget = true;
+            onDealDamageStatusEffect.TargetCriteria.IsSpecificCard = base.Card;
+            onDealDamageStatusEffect.DamageAmountCriteria.GreaterThan = 0;
+            onDealDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
+            onDealDamageStatusEffect.UntilTargetLeavesPlay(base.Card);
+            onDealDamageStatusEffect.BeforeOrAfter = BeforeOrAfter.After;
+            onDealDamageStatusEffect.DoesDealDamage = true;
+            IEnumerator coroutine = AddStatusEffect(onDealDamageStatusEffect);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+        }
+        public IEnumerator CounterDamageResponse(DealDamageAction dd, TurnTaker hero, StatusEffect effect, int[] powerNumerals = null)
+        {
+            DamageType? damageTypeThatTMHWillReflect = GetDamageTypeThatTMHWillReflect();
+            int? num = null;
+            if (powerNumerals != null)
+            {
+                num = powerNumerals.ElementAtOrDefault(0);
+            }
+            if (!num.HasValue)
+            {
+                num = 1;
+            }
+            if (dd.DamageSource.IsCard)
+            {
+                Card source = base.Card;
+                if (hero != null && hero.IsPlayer)
+                {
+                    source = hero.CharacterCard;
+                }
 
-            //Will this reduce the damage until the start of the next turn.
-            //DamageType? damageTypeThatTMHWillDeal = GetDamageTypeThatTMHWillDeal();
-
-            AddCounterDamageTrigger((DealDamageAction dd) => dd.Target == base.CharacterCard, () => base.CharacterCard, () => base.CharacterCard, oncePerTargetPerTurn: true, 1, DamageType.Energy);
-
-            //OnDealDamageStatusEffect onDealDamageStatusEffect = new OnDealDamageStatusEffect(base.Card, DealDamage, );
-
-            return AddStatusEffect(reduceDamageStatusEffect);
+                IEnumerator coroutine = DealDamage(source, dd.DamageSource.Card, num.Value, damageTypeThatTMHWillReflect.Value /* DamageType.Melee*/, isIrreducible: false, optional: true, isCounterDamage: true, null, null, null, ignoreBattleZone: false, GetCardSource(effect));
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+        }
+       
+        ////AdaptivePlatingSubroutine
+        private DamageType? GetDamageTypeThatTMHWillReflect()
+        {
+            DealDamageJournalEntry dealDamageJournalEntry = base.GameController.Game.Journal.MostRecentDealDamageEntry((DealDamageJournalEntry e) => e.TargetCard == base.CharacterCard && e.Amount > 0);
+            PlayCardJournalEntry playCardJournalEntry = base.GameController.Game.Journal.QueryJournalEntries((PlayCardJournalEntry e) => e.CardPlayed == base.Card).LastOrDefault();
+            //if (playCardJournalEntry != null)
+            //{
+                int? entryIndex = base.GameController.Game.Journal.GetEntryIndex(dealDamageJournalEntry);
+                //int? entryIndex2 = base.GameController.Game.Journal.GetEntryIndex(playCardJournalEntry);
+                if (entryIndex.HasValue)
+                {
+                    return dealDamageJournalEntry.DamageType;
+                }
+            //}
+            return null;
 
         }
-        //private DamageType? GetDamageTypeThatTMHWillDeal()
-        //{
-        //    DealDamageJournalEntry dealDamageJournalEntry = base.GameController.Game.Journal.MostRecentDealDamageEntry((DealDamageJournalEntry e) => e.TargetCard == base.CharacterCard && e.Amount > 0);
-        //    PlayCardJournalEntry playCardJournalEntry = base.GameController.Game.Journal.QueryJournalEntries((PlayCardJournalEntry e) => e.CardPlayed == base.Card).LastOrDefault();
-        //    if (playCardJournalEntry != null)
-        //    {
-        //        int? entryIndex = base.GameController.Game.Journal.GetEntryIndex(dealDamageJournalEntry);
-        //        int? entryIndex2 = base.GameController.Game.Journal.GetEntryIndex(playCardJournalEntry);
-        //        if (entryIndex.HasValue && entryIndex2.HasValue && entryIndex.Value > entryIndex2.Value)
-        //        {
-        //            return dealDamageJournalEntry.DamageType;
-        //        }
-        //    }
-        //    return null;
-        //}
-    }
+            //private DamageType? GetDamageTypeThatTMHWillDeal()
+            //{
+            //    DealDamageJournalEntry dealDamageJournalEntry = base.GameController.Game.Journal.MostRecentDealDamageEntry((DealDamageJournalEntry e) => e.TargetCard == base.CharacterCard && e.Amount > 0);
+            //    PlayCardJournalEntry playCardJournalEntry = base.GameController.Game.Journal.QueryJournalEntries((PlayCardJournalEntry e) => e.CardPlayed == base.Card).LastOrDefault();
+            //    if (playCardJournalEntry != null)
+            //    {
+            //        int? entryIndex = base.GameController.Game.Journal.GetEntryIndex(dealDamageJournalEntry);
+            //        int? entryIndex2 = base.GameController.Game.Journal.GetEntryIndex(playCardJournalEntry);
+            //        if (entryIndex.HasValue && entryIndex2.HasValue && entryIndex.Value > entryIndex2.Value)
+            //        {
+            //            return dealDamageJournalEntry.DamageType;
+            //        }
+            //    }
+            //    return null;
+            //}
+        }
 }
