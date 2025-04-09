@@ -20,44 +20,35 @@ namespace ISSUEComics.TMH
 		}
 		public override IEnumerator Play()
 		{
-			//Infrared Eyepiece
-			List<SelectLocationDecision> storedResults = new List<SelectLocationDecision>();
+            //Reveal the Top card of the Villain deck and the top card of The Machine Hearts deck.  You may place These cards on the top or bottom of their deck.   Draw a Card.
+            //Infrared Eyepiece
+            List<SelectLocationDecision> storedResults = new List<SelectLocationDecision>();
 			List<SelectLocationDecision> storedResults2 = new List<SelectLocationDecision>();
 
 			IEnumerator coroutine = FindVillainDeck(DecisionMaker, SelectionType.RevealCardsFromDeck, storedResults, (Location l) => true);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
-				
 			}
 			else
 			{
 				base.GameController.ExhaustCoroutine(coroutine);
-				
 			}
 			Location deck = GetSelectedLocation(storedResults);
-
-			List<Card> storedCards = new List<Card>();
-			List<Card> storedCards2 = new List<Card>();
-			if (deck != null)
+			IEnumerator coroutine2 = TakeAPeekResponse(deck);
+			IEnumerator coroutine3 = TakeAPeekResponse(this.TurnTaker.Deck);
+			if (base.UseUnityCoroutines)
 			{
-				int powerNumeral = GetPowerNumeral(0, 2);
-				int powerNumeral2 = GetPowerNumeral(1, 2);
-				IEnumerator coroutine2 = RevealCardsFromTopOfDeck_PutOnTopAndOnBottom(base.HeroTurnTakerController, base.TurnTakerController, deck, powerNumeral, powerNumeral2, 1, storedCards);
-				IEnumerator coroutine3 = RevealCardsFromTopOfDeck_PutOnTopAndOnBottom(base.HeroTurnTakerController, base.TurnTakerController, base.TurnTaker.Deck, powerNumeral, powerNumeral2, 1, storedCards2);
-				if (base.UseUnityCoroutines)
-				{
-					yield return base.GameController.StartCoroutine(coroutine2);
-					yield return base.GameController.StartCoroutine(coroutine3);
-				}
-				else
-				{
-					base.GameController.ExhaustCoroutine(coroutine2);
-					base.GameController.ExhaustCoroutine(coroutine3);
-
-				}
+				yield return base.GameController.StartCoroutine(coroutine2);
+				yield return base.GameController.StartCoroutine(coroutine3);
 			}
-				IEnumerator coroutine4 = DrawCard(base.HeroTurnTakerController.HeroTurnTaker, optional: false);
+			else
+			{
+				base.GameController.ExhaustCoroutine(coroutine2);
+				base.GameController.ExhaustCoroutine(coroutine3);
+			}
+			
+			IEnumerator coroutine4 = DrawCard(base.HeroTurnTakerController.HeroTurnTaker, optional: false);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine4);
@@ -67,5 +58,54 @@ namespace ISSUEComics.TMH
 				base.GameController.ExhaustCoroutine(coroutine4);
 			}
 		}
-	}
+
+        private IEnumerator TakeAPeekResponse(Location deck)
+        {
+            //Modified from Parse's card Updated Intel
+            if (deck == null)
+            {
+                yield break;
+            }
+            List<Card> storedResultsCard = new List<Card>();
+            IEnumerator coroutine = base.GameController.RevealCards(base.TurnTakerController, deck, 1, storedResultsCard, fromBottom: false, RevealedCardDisplay.None, null, GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            Card card = storedResultsCard.FirstOrDefault();
+            if (card != null)
+            {
+                List<MoveCardDestination> list = new List<MoveCardDestination>();
+                list.Add(new MoveCardDestination(deck));
+                list.Add(new MoveCardDestination(deck, toBottom: true));
+                GameController gameController = base.GameController;
+                HeroTurnTakerController decisionMaker = DecisionMaker;
+                CardSource cardSource = GetCardSource();
+                coroutine = gameController.SelectLocationAndMoveCard(decisionMaker, card, list, isPutIntoPlay: false, playIfMovingToPlayArea: true, null, null, null, flipFaceDown: false, showOutput: false, null, isDiscardIfMovingToTrash: false, cardSource);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            List<Location> list2 = new List<Location>();
+            list2.Add(deck.OwnerTurnTaker.Revealed);
+            coroutine = base.GameController.CleanupCardsAtLocations(base.TurnTakerController, list2, deck, toBottom: false, addInhibitorException: true, shuffleAfterwards: false, sendMessage: false, isDiscard: false, isReturnedToOriginalLocation: true, storedResultsCard, GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+        }
+    }
 }

@@ -153,7 +153,10 @@
       "keywords": [
         "one-shot"
       ],
-      "icons": [],
+      "icons": [
+        "Manipulate",
+        "DrawCardNow"
+      ],
       "body": [
         "Reveal the Top card of the Villain deck and the top card of The Machine Hearts deck.  You may place These cards on the top or bottom of their deck.   Draw a Card."
       ],
