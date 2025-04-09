@@ -250,6 +250,13 @@ namespace Handelabra.Sentinels.UnitTest
         protected TurnTakerController scionOne { get { return this.GameController.FindTurnTakerController(bzOne.FindScion()); } }
         protected TurnTakerController scionTwo { get { return this.GameController.FindTurnTakerController(bzTwo.FindScion()); } }
 
+        //These locations added for ease of testing cards that manipulate decks in OblivAeon mode
+        protected Location aeonDeck { get { return oblivaeon.TurnTaker.FindSubDeck("AeonMenDeck"); } }
+        protected Location aeonTrash { get { return oblivaeon.TurnTaker.FindSubTrash("AeonMenDeck"); } }
+        protected Location scionDeck { get { return oblivaeon.TurnTaker.FindSubDeck("ScionDeck"); } }
+        protected Location scionTrash { get { return oblivaeon.TurnTaker.FindSubTrash("ScionDeck"); } }
+        protected Location missionDeck { get { return oblivaeon.TurnTaker.FindSubDeck("MissionDeck"); } }
+
         protected Card aeonScion { get { return GetCard("AeonMasterCharacter"); } }
         protected Card borrScion { get { return GetCard("BorrTheUnstableCharacter"); } }
         protected Card mindScion { get { return GetCard("DarkMindCharacter"); } }
