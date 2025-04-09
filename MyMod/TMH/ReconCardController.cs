@@ -16,21 +16,7 @@ namespace ISSUEComics.TMH
 		}
 		public override IEnumerator Play()
 		{
-			//IEnumerator blahcoroutine = DrawCards(base.HeroTurnTakerController, 4);
-			//IEnumerator playEnumerator = SelectAndPlayCardFromHand(base.HeroTurnTakerController);
-			//IEnumerator end2 = base.GameController.ImmediatelyEndTurn(base.HeroTurnTakerController, GetCardSource());
-			//if (base.UseUnityCoroutines)
-			//{
-			//	yield return base.GameController.StartCoroutine(blahcoroutine);
-			//	yield return base.GameController.StartCoroutine(playEnumerator);
-			//	yield return base.GameController.StartCoroutine(end2);
-			//}
-			//else
-			//{
-			//	base.GameController.ExhaustCoroutine(blahcoroutine);
-			//	base.GameController.ExhaustCoroutine(playEnumerator);
-			//	base.GameController.ExhaustCoroutine(end2);
-			//}
+			
 			//Inconceivable Obstruction Kismet
 			List<RevealCardsAction> storedResults = new List<RevealCardsAction>();
 			IEnumerator coroutine = base.GameController.RevealCards(base.TurnTakerController, FindEnvironment().TurnTaker.Deck, 1, null, fromBottom: false, RevealedCardDisplay.Message, storedResults, GetCardSource());
